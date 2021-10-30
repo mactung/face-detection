@@ -22,22 +22,32 @@ app.listen(port, () => {
 
 async function productsFaceDetect(req, res) {
     const response = await axios.get(
-        "https://api.printerval.com/product?embeds=categories&filters=categories.category_id=7,product.status=ACTIVE&fields=id&page_id=1&page_size=100"
+        "https://api.printerval.com/product?embeds=categories&filters=categories.category_id=7,product.status=ACTIVE&fields=id&page_size=10"
     );
+    
 
     const pageCount = response.data.meta.page_count;
-    
+
     for (let j = 0; j < pageCount; j++) {
+        // const resProducts = await axios.get(
+        //     "https://api.printerval.com/product/8645"
+        // );
         const resProducts = await axios.get(
-            "https://api.printerval.com/product?embeds=categories&filters=categories.category_id=7,product.status=ACTIVE&fields=id&page_size=1000&page_id=" + j
+            "https://api.printerval.com/product?embeds=categories&filters=categories.category_id=7,product.status=ACTIVE&fields=id&page_size=10&page_id=" +
+                j
         );
         const data = resProducts.data.result;
         let result = [];
         for (let index = 0; index < data.length; index++) {
             const product = data[index];
             if (product.variant_default.image_url) {
+                const imageUrl = product.variant_default.image_url.replace(
+                    "https://",
+                    ""
+                );
                 const resDetections = await faceDetect(
-                    product.variant_default.image_url
+                    "https://cdn.printerval.com/unsafe/1260x0/filters:format(jpg)/" +
+                        imageUrl
                 );
                 if (resDetections.length > 0) {
                     let isRealFace = false;
@@ -64,11 +74,7 @@ async function productsFaceDetect(req, res) {
             }
         }
     }
-    
-    
-    // const resProducts = await axios.get(
-    //     "https://api.printerval.com/product/8645"
-    // );
+
     res.json(result);
 }
 
