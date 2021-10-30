@@ -1,0 +1,20 @@
+{
+  "name": "facejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "1.x.0",
+    "axios": "^0.24.0",
+    "canvas": "^2.8.0",
+    "express": "^4.17.1",
+    "face-api.js": "^0.22.2",
+    "fs": "^0.0.1-security"
+  },
+  "type": "module"
+}
